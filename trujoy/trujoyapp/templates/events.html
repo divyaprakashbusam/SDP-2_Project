@@ -1,0 +1,22 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<div class="row" >
+	  {% for eve in events %}
+		<div class="col-lg-4">
+			<img class="thumbnail" src="{{eve.image.url}}">
+			<div class="box-element product">
+				<h6><strong>{{eve.name}}</strong></h6>
+				<hr>
+
+
+                <a class="btn btn-outline-success" href="{% url 'trujoyapp:ground_booking' %}">Book Now</a>
+
+				<h4 style="display: inline-block; float: right"><strong>{{eve.price|floatformat:2}}</strong></h4>
+
+			</div>
+		</div>
+	    {% endfor %}
+
+	</div>
+{% endblock content %}

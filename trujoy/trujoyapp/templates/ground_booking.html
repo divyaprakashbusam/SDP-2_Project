@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Events Booking</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"> -->
+<link rel="icon" href="{% static '/res/android-chrome-512x512.png' %}">
+   <link rel="apple-touch-icon" href="{% static '/res/apple-touch-icon.png' %}">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Muli:500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/add_event.css' %}">
+
+  <style>
+     body{
+        background-color: #091221;
+     }
+ </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+      $(document).ready(function()
+      {
+          var $eventvar=$("#event");
+              $pricevar=$("#price");
+
+              $options=$pricevar.find('option');
+              $eventvar.on('change',function()
+              {
+                 $pricevar.html($options.filter('[value="'+this.value+'"]'));
+
+              }).trigger('change');
+      });
+  </script>
+
+</head>
+
+
+<div class="container-fluid header">
+  <div class="row justify-content-center">
+    <div class="col-lg-4 box bg-light">
+      <center><h2 class="bg-dark" style="color: white; margin-right:30px; ">Event Booking Details</h2></center>
+      <span style="font-size:18px">{{ status }}</span>
+
+      <div class="row justify-content-center">
+        <div class="col-lg-6">
+          <div class="inputbox">
+            <form action="{% url 'trujoyapp:db_ground_booking' %}" method="post">
+              {% csrf_token %}
+              Mobile<br>
+              <input type="text" name="mobile" minlength="10" maxlength="10" autocomplete="off" pattern="[6-9]{1}[0-9]{9}" title="Numbers only" required><br>
+              <br>
+              Email<br>
+              <input type="text" name="email" required>
+              <br>
+              <br>
+              Date<br>
+              <input type="date" name="date" min="{{ date }}" autocomplete="off" required><br>
+              <br>
+              Time<br>
+              <input type="time" name="time" min="06:00" max="18:00" required>
+              <br>
+              <br>
+              Venue<br>
+              <input type="text" name="venue" required>
+              <br>
+              <br>
+
+               No.of Persons<br>
+              <select id="people" name="people">
+                <option disabled selected="true">--select persons--</option>
+                <option value="50-100">50-100</option>
+                <option value="100-300">100-300</option>
+                <option value="300-500">300-500</option>
+                <option value="500-1000">500-1000</option>
+                <option value="1000+">1000+</option>
+              </select>
+              <br>
+              <br>
+              Catering<br>
+              <input type="radio" name="cat" value="Yes">Yes
+              <input type="radio" name="cat" value="No">No
+
+              <br>
+
+              Events<br>
+              <select id="event" name="event">
+                <option disabled selected="true">--choose an event--</option>
+                {% for eves in eventss %}
+                <option value="{{eves.name}}">{{eves.name}}</option>
+                {% endfor %}
+              </select>
+              <br>
+              <br>
+
+              Decoration Themes<br>
+              <select id="deco" name="deco">
+                <option disabled selected="true">--choose a Theme--</option>
+                <option value="Floral Theme">Floral Theme</option>
+                <option value="Cartoon Theme">Cartoon Theme</option>
+                <option value="Aesthetic Theme">Aesthetic Theme</option>
+              </select>
+              <br>
+              <br>
+
+              Price<br>
+              <select id="price" name="price">
+                <option disabled selected="true">------</option>
+                {% for eves in eventss %}
+                <option value="{{eves.name}}">{{eves.price}}</option>
+                {% endfor %}
+              </select>
+
+
+
+              <div class="footer">
+                <input type="reset" value="Reset" name="submit">
+                <input type="submit" value="Book" name="submit">
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+      <a href="{% url 'trujoyapp:eventslist' %}" style="color: white;">Back</a>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
